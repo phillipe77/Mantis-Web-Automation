@@ -19,10 +19,15 @@ public class IssueMonitorTest extends BaseTest {
         logger.info("Iniciando teste de monitoramento de tarefa");
 
         try {
-            performLogin();
-            navigateToIssue(ConfigReader.getProperty("issue.id"));
+            performLogin();  // Executa o login
+            navigateToIssue(ConfigReader.getProperty("issue.id"));  // Navega até a tarefa
+
+            // Executa a ação de monitorar a tarefa
             performAction(this::monitorIssue);
+
+            // Verifica se a tarefa está monitorada corretamente
             performAction(this::verifyIssueMonitored);
+
         } finally {
             // Encerrar o WebDriver após todas as ações e validações
             if (driver != null) {
@@ -46,6 +51,8 @@ public class IssueMonitorTest extends BaseTest {
 
     private void verifyIssueMonitored() {
         IssuePage issuePage = new IssuePage(driver);
+
+        // Verifica se a tarefa está sendo monitorada corretamente
         assertTrue(issuePage.isIssueBeingMonitored(), "A tarefa monitorada não está na lista de monitoradas.");
         logger.info("Tarefa monitorada verificada com sucesso.");
     }
