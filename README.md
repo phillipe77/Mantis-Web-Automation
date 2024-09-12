@@ -75,7 +75,7 @@ allure serve allure-results
 * **src/main/java/mantis/core/DriverFactory**: Configura o WebDriver (navegador).
 * **src/main/java/mantis/pages**: Contém as classes de páginas (LoginPage, IssuePage, DashboardPage).
 * **src/main/java/mantis/utils**: Classes utilitárias como `WaitUtils`, `ConfigReader`, entre outras.
-* **src/test/java/mantis/tests**: Contém os testes organizados em pacotes (por exemplo, `authentication` e `issue`).
+* **src/test/java/mantis/tests**: Contém os testes organizados em pacotes (`authentication` e `issue`).
 
 ## 📜 Licença
 
