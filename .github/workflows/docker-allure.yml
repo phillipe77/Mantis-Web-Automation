@@ -1,4 +1,3 @@
-
 name: Docker Maven Test with Allure
 
 on:
@@ -24,13 +23,6 @@ jobs:
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
-            -e USERNAME=${{ secrets.USERNAME }} \
-            -e PASSWORD=${{ secrets.PASSWORD }} \
-            -e BASE_URL=${{ secrets.BASE_URL }} \
-            -e BROWSER=${{ secrets.BROWSER }} \
-            -e IMPLICIT_WAIT=${{ secrets.IMPLICIT_WAIT }} \
-            -e ISSUE_CATEGORY=${{ secrets.ISSUE_CATEGORY }} \
-            -e ISSUE_ID=${{ secrets.ISSUE_ID }} \
             mantis-web-automation mvn clean test
 
       - name: Generate Allure Report
@@ -46,7 +38,6 @@ jobs:
         with:
           name: allure-report
           path: ${{ github.workspace }}/target/site/allure-maven/
-
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

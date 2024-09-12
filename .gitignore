@@ -59,5 +59,3 @@ buildNumber.properties
 *.swp
 *.bak
 
-# Excluir o arquivo de configuração local
-src/main/resources/config.properties

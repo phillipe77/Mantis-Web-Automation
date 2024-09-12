@@ -1,7 +1,7 @@
 package mantis.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class ConfigReader {
@@ -9,14 +9,15 @@ public class ConfigReader {
 
     static {
         properties = new Properties();
-        try {
-            // Tenta carregar o arquivo de configuração localmente
-            FileInputStream file = new FileInputStream("src/main/resources/config.properties");
-            properties.load(file);
-            file.close();
+        try (InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties")) {
+            if (input == null) {
+                System.err.println("Desculpe, não foi possível encontrar config.properties");
+            } else {
+                // Carrega o arquivo de configuração
+                properties.load(input);
+            }
         } catch (IOException e) {
             System.err.println("Falha ao carregar o arquivo de configuração: " + e.getMessage());
-            // Você pode optar por lançar a exceção aqui ou apenas logar o erro, dependendo da sua necessidade
         }
     }
 
