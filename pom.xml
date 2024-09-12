@@ -108,8 +108,18 @@
                 <artifactId>allure-maven</artifactId>
                 <version>2.10.0</version>
                 <configuration>
+                    <!-- Configura o diretório de resultados do Allure -->
+                    <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
                     <reportVersion>${allure.version}</reportVersion>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
