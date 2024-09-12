@@ -53,7 +53,7 @@ jobs:
             mantis-web-automation
 
       - name: List Allure Results
-        run: ls -la allure-results
+        run: ls -la ${{ github.workspace }}/allure-results
 
       - name: Install Allure
         run: |
@@ -65,17 +65,17 @@ jobs:
           allure --version
 
       - name: Generate Allure Report
-        run: allure generate allure-results --clean -o allure-report
+        run: allure generate ${{ github.workspace }}/allure-results --clean -o ${{ github.workspace }}/allure-report
 
       - name: Upload Allure Report as artifact
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
-          path: allure-report
+          path: ${{ github.workspace }}/allure-report
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: success()
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: allure-report
+          publish_dir: ${{ github.workspace }}/allure-report
