@@ -32,14 +32,25 @@ jobs:
 
       - name: Run tests in Docker container
         env:
+          # Variáveis sensíveis devem ser armazenadas nos secrets
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
+          BASE_URL: http://mantis-prova.base2.com.br
+          BROWSER: chrome
+          IMPLICIT_WAIT: '10'
+          ISSUE_CATEGORY: '[Todos os Projetos] categoria teste'
+          ISSUE_ID: '1628'
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
             -w /app \
             -e USERNAME=${{ secrets.USERNAME }} \
             -e PASSWORD=${{ secrets.PASSWORD }} \
+            -e BASE_URL=http://mantis-prova.base2.com.br \
+            -e BROWSER=chrome \
+            -e IMPLICIT_WAIT='10' \
+            -e ISSUE_CATEGORY='[Todos os Projetos] categoria teste' \
+            -e ISSUE_ID='1628' \
             maven-allure-tests
 
       - name: List Allure Results

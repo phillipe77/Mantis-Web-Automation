@@ -8,14 +8,15 @@ public class ConfigReader {
     private static Properties properties;
 
     static {
+        properties = new Properties();
         try {
-            properties = new Properties();
+            // Tenta carregar o arquivo de configuração localmente
             FileInputStream file = new FileInputStream("src/main/resources/config.properties");
             properties.load(file);
             file.close();
         } catch (IOException e) {
             System.err.println("Falha ao carregar o arquivo de configuração: " + e.getMessage());
-            throw new RuntimeException(e);
+            // Você pode optar por lançar a exceção aqui ou apenas logar o erro, dependendo da sua necessidade
         }
     }
 
