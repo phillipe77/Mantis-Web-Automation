@@ -1,3 +1,4 @@
+
 name: Docker Maven Test with Allure
 
 on:
@@ -16,30 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       - name: Build Docker image
         run: docker build -t mantis-web-automation .
 
       - name: Run tests in Docker container
-        env:
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          BASE_URL: ${{ secrets.BASE_URL }}
-          BROWSER: ${{ secrets.BROWSER }}
-          IMPLICIT_WAIT: ${{ secrets.IMPLICIT_WAIT }}
-          ISSUE_CATEGORY: ${{ secrets.ISSUE_CATEGORY }}
-          ISSUE_ID: ${{ secrets.ISSUE_ID }}
-
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
@@ -50,28 +31,22 @@ jobs:
             -e IMPLICIT_WAIT=${{ secrets.IMPLICIT_WAIT }} \
             -e ISSUE_CATEGORY=${{ secrets.ISSUE_CATEGORY }} \
             -e ISSUE_ID=${{ secrets.ISSUE_ID }} \
-            mantis-web-automation
-
-      - name: List Allure Results
-        run: ls -la ${{ github.workspace }}/allure-results
-
-      - name: Install Allure
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.zip
-          sudo unzip allure-2.30.0.zip -d /opt
-          sudo ln -s /opt/allure-2.30.0/bin/allure /usr/local/bin/allure
-          allure --version
+            mantis-web-automation mvn clean test
 
       - name: Generate Allure Report
-        run: allure generate ${{ github.workspace }}/allure-results --clean -o ${{ github.workspace }}/allure-report
+        if: always()
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            mantis-web-automation mvn allure:report
 
-      - name: Upload Allure Report as artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v2
         with:
           name: allure-report
-          path: ${{ github.workspace }}/allure-report
+          path: ${{ github.workspace }}/target/site/allure-maven/
+
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

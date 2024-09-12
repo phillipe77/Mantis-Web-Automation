@@ -1,7 +1,7 @@
-
 # Usando Maven com Java 17
 FROM maven:3.8.1-openjdk-17-slim
 LABEL authors="Phillipe Linhares"
+
 # Instalando o Chrome
 RUN apt-get update && apt-get install -y wget gnupg2 curl unzip \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -23,6 +23,3 @@ COPY . .
 
 # Permissões
 RUN chmod -R 777 /app
-
-# Comando para rodar os testes
-CMD ["mvn", "clean", "test"]
