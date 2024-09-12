@@ -32,7 +32,6 @@ jobs:
 
       - name: Run tests in Docker container
         env:
-
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           BASE_URL: ${{ secrets.BASE_URL }}
