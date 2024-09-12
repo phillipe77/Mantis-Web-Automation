@@ -6,6 +6,7 @@ Projeto de testes automatizados para a aplicação web Mantis, desenvolvida em J
 
 Os testes automatizados incluem:
 
+* **Login (Authentication)**: Verifica o processo de autenticação no sistema Mantis.
 * **Criação de Tarefas (Issue Creation)**: Verifica a criação de novas tarefas no Mantis, garantindo que os campos obrigatórios (categoria, resumo e descrição) sejam fornecidos corretamente.
 * **Adição de Comentários (Issue Comment)**: Valida a adição de comentários em uma tarefa existente e a verificação do comentário inserido.
 * **Monitoramento de Tarefas (Issue Monitoring)**: Garante que uma tarefa pode ser monitorada e, posteriormente, desmonitorada.
@@ -21,18 +22,23 @@ Camadas:
 * **Core (DriverFactory)**: Contém a configuração e a criação do WebDriver, garantindo que o navegador seja inicializado corretamente.
 * **Pages**: Classes que representam as páginas do sistema (Login, Dashboard, Issue). Cada página contém os métodos de interação com seus elementos.
 * **Utils**: Utilitários de suporte, como:
-    * **WaitUtils**: Gerencia as esperas explícitas durante a execução dos testes.
-    * **ConfigReader**: Carrega as configurações do arquivo `config.properties` (como a URL base e as credenciais).
-    * **InputUtils, CategoryUtils**: Funções auxiliares para manipulação de entradas e categorias.
+  * **WaitUtils**: Gerencia as esperas explícitas durante a execução dos testes.
+  * **ConfigReader**: Carrega as configurações do arquivo `config.properties` (como a URL base e as credenciais).
+  * **InputUtils, CategoryUtils**: Funções auxiliares para manipulação de entradas e categorias.
 * **Tests**: Conjunto de testes que utilizam as páginas e os utilitários para garantir modularidade e reuso de código.
+
+### Tratamento de Limite de Atividades
+
+O projeto tem implementado um mecanismo na Base Test para lidar com o limite de atividades na aplicação Mantis. Quando o limite é atingido, os testes são marcados como ignorados para evitar falhas falsas. Isso é feito através do método `handleLimitError()`:
+
 
 ## 🛠 Tecnologias Utilizadas
 
-* **Java 17**: Linguagem de programação usada no desenvolvimento dos testes.
+* **Java 17**: 
 * **JUnit**: Framework de testes utilizado em conjunto com Selenium para a criação e execução de testes automatizados.
-* **Selenium**: Biblioteca para automação de navegadores web, utilizada para interagir com a interface da aplicação Mantis.
+* **Selenium**: Biblioteca para automação de navegadores web.
 * **Maven**: Gerenciamento de dependências e build do projeto.
-* **Allure**: Framework utilizado para gerar relatórios detalhados de execução de testes, com integração visual para fácil análise.
+* **Allure**: Framework utilizado para gerar relatórios de testes.
 
 ## 🧑‍💻 Execução do Projeto
 
@@ -41,7 +47,7 @@ Camadas:
 Certifique-se de ter as seguintes ferramentas instaladas:
 * Java Development Kit (JDK) 17
 * Apache Maven
-* Allure Command Line (para geração de relatórios)
+* Allure Command Line 
 
 ### 🔧 Execução Local
 
@@ -69,8 +75,7 @@ allure serve allure-results
 * **src/main/java/mantis/core/DriverFactory**: Configura o WebDriver (navegador).
 * **src/main/java/mantis/pages**: Contém as classes de páginas (LoginPage, IssuePage, DashboardPage).
 * **src/main/java/mantis/utils**: Classes utilitárias como `WaitUtils`, `ConfigReader`, entre outras.
-* **src/test/java/mantis/tests**: Contém os testes organizados em pacotes (por exemplo, `issue` e `authentication`).
-
+* **src/test/java/mantis/tests**: Contém os testes organizados em pacotes (por exemplo, `authentication` e `issue`).
 
 ## 📜 Licença
 
