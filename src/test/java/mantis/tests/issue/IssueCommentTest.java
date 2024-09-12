@@ -18,13 +18,21 @@ public class IssueCommentTest extends BaseTest {
     public void testAddCommentToIssue() {
         logger.info("Iniciando teste de adição de comentário à tarefa");
 
-        performLogin();
-        navigateToIssue(ConfigReader.getProperty("issue.id"));
+        try {
+            performLogin();
+            navigateToIssue(ConfigReader.getProperty("issue.id"));
 
-        String comment = "Este é um comentário de teste " + System.currentTimeMillis();
+            String comment = "Este é um comentário de teste " + System.currentTimeMillis();
 
-        performAction(() -> addCommentToIssue(comment));
-        performAction(() -> verifyCommentAdded(comment));
+            performAction(() -> addCommentToIssue(comment));
+            performAction(() -> verifyCommentAdded(comment));
+        } finally {
+            // Aqui o WebDriver será fechado após todas as ações serem realizadas
+            if (driver != null) {
+                logger.info("Encerrando o WebDriver");
+                driver.quit();
+            }
+        }
     }
 
     private void addCommentToIssue(String comment) {

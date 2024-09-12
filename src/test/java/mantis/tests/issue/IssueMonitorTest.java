@@ -18,10 +18,18 @@ public class IssueMonitorTest extends BaseTest {
     public void testMonitorIssue() {
         logger.info("Iniciando teste de monitoramento de tarefa");
 
-        performLogin();
-        navigateToIssue(ConfigReader.getProperty("issue.id"));
-        performAction(this::monitorIssue);
-        performAction(this::verifyIssueMonitored);
+        try {
+            performLogin();
+            navigateToIssue(ConfigReader.getProperty("issue.id"));
+            performAction(this::monitorIssue);
+            performAction(this::verifyIssueMonitored);
+        } finally {
+            // Encerrar o WebDriver após todas as ações e validações
+            if (driver != null) {
+                logger.info("Encerrando o WebDriver");
+                driver.quit();
+            }
+        }
     }
 
     private void monitorIssue() {

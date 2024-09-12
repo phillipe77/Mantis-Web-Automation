@@ -19,9 +19,18 @@ public class IssueCreationTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void testCreateNewIssue() {
         logger.info("Iniciando teste de criação de nova tarefa");
-        performLogin();
-        performAction(this::navigateToCreateIssuePage);
-        performAction(this::createAndVerifyIssue);
+
+        try {
+            performLogin();
+            performAction(this::navigateToCreateIssuePage);
+            performAction(this::createAndVerifyIssue);
+        } finally {
+            // Aqui o WebDriver será fechado após todas as ações serem realizadas
+            if (driver != null) {
+                logger.info("Encerrando o WebDriver");
+                driver.quit();
+            }
+        }
     }
 
     private void navigateToCreateIssuePage() {

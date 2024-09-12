@@ -17,24 +17,24 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build -t mantis-web-automation .
+        run: docker build -t mantis-web-automation . --quiet
 
       - name: Run tests in Docker container
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
-            mantis-web-automation mvn clean test
+            mantis-web-automation mvn clean test --batch-mode --quiet
 
       - name: Generate Allure Report
         if: always()
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
-            mantis-web-automation mvn allure:report
+            mantis-web-automation mvn allure:report --batch-mode --quiet
 
       - name: Upload Allure Report
         if: always()
-        uses: actions/upload-artifact@v3  # Atualizado para v3
+        uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: ${{ github.workspace }}/target/site/allure-maven/

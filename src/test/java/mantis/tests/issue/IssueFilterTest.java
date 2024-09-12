@@ -18,10 +18,18 @@ public class IssueFilterTest extends BaseTest {
     public void testFilterByNewStatus() {
         logger.info("Iniciando o teste de filtro de tarefas pelo estado 'novo'.");
 
-        performLogin();
-        performAction(this::navigateToTaskPage);
-        performAction(this::applyNewStatusFilter);
-        performAction(this::verifyFilterApplied);
+        try {
+            performLogin();
+            performAction(this::navigateToTaskPage);
+            performAction(this::applyNewStatusFilter);
+            performAction(this::verifyFilterApplied);
+        } finally {
+            // Encerrar o WebDriver após todas as ações e validações
+            if (driver != null) {
+                logger.info("Encerrando o WebDriver");
+                driver.quit();
+            }
+        }
     }
 
     private void navigateToTaskPage() {

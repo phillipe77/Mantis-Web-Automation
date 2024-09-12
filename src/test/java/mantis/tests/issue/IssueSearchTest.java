@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IssueSearchTest extends BaseTest {
@@ -21,10 +22,18 @@ public class IssueSearchTest extends BaseTest {
         String issueId = ConfigReader.getProperty("issue.id");
         logger.info("ID da tarefa a ser buscada: {}", issueId);
 
-        performLogin();
-        performAction(this::navigateToTaskPage);
-        performAction(() -> searchForIssue(issueId));
-        performAction(() -> verifyIssueFound(issueId));
+        try {
+            performLogin();
+            performAction(this::navigateToTaskPage);
+            performAction(() -> searchForIssue(issueId));
+            performAction(() -> verifyIssueFound(issueId));
+        } finally {
+            // Encerrar o WebDriver após todas as ações e validações
+            if (driver != null) {
+                logger.info("Encerrando o WebDriver");
+                driver.quit();
+            }
+        }
     }
 
     private void navigateToTaskPage() {
@@ -44,16 +53,13 @@ public class IssueSearchTest extends BaseTest {
     private void verifyIssueFound(String issueId) {
         IssuePage issuePage = new IssuePage(driver);
 
-
         boolean isTaskDisplayed = issuePage.isTaskDetailsPageDisplayed();
 
         if (!isTaskDisplayed) {
             logger.error("A página de detalhes da tarefa '{}' não foi carregada corretamente.", issueId);
         }
 
-
         assertTrue(isTaskDisplayed, "A página de detalhes da tarefa '" + issueId + "' não foi carregada corretamente.");
         logger.info("Tarefa '{}' verificada com sucesso.", issueId);
     }
-
 }
